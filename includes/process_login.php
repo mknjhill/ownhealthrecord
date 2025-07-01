@@ -28,7 +28,7 @@ if (isset($_POST['email'], $_POST['p'])) {
     
     if (login($email, $password, $mysqli) == true) {
         // Login success 
-        header("Location: ../medical/medical-record.php");
+        header("Location: ../medical/dashboard.php");
         exit();
     } else {
         // Login failed 

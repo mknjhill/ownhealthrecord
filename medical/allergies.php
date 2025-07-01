@@ -85,13 +85,13 @@ sec_session_start();
 
             <ul class="nav">
                 <li>
-                    <a href="#">
+                    <a href="dashboard.php">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="patient.php">
                         <i class="ti-user"></i>
                         <p>Patient</p>
                     </a>
@@ -109,19 +109,13 @@ sec_session_start();
                     </a>
                 </li>				
                 <li>
-                    <a href="fitness.php">
-                        <i class="far fa-heart"></i>
-                        <p>Fitness Data</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="medicine.php">
+                    <a href="#">
                         <i class="fas fa-pills"></i>
                         <p>Medicine</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#">
+                    <a href="allergies.php">
                         <i class="fas fa-allergies"></i>
                         <p>Allergies</p>
                     </a>
@@ -133,13 +127,7 @@ sec_session_start();
                     </a>
                 </li>
                 <li>
-                    <a href="sleep.php">
-                        <i class="fas fa-bed"></i>
-                        <p>Sleep Data</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="medical-documents.php">
+                    <a href="http://filecabinet.local">
                         <i class="fas fa-file-upload"></i>
                         <p>Medical Documents</p>
                     </a>
@@ -158,31 +146,10 @@ sec_session_start();
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Allergies</a>
+                    <a class="navbar-brand" href="#">Allergy</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="ti-panel"></i>
-								<p>Statistics</p>
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="ti-bell"></i>
-                                    <p class="notification">5</p>
-									<p>Notifications</p>
-									<b class="caret"></b>
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
-                              </ul>
-                        </li>
 						<li>
                             <a href="../includes/logout.php?csrf=$_SESSION['csrf_token']">
 								<i class="ti-settings"></i>
@@ -202,7 +169,28 @@ sec_session_start();
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">New Entry</h4>
+                                <p class="category">Here a new entry for the medicine is written</p>
+                            </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>Allergy Name</th>
+                                    	<th>Allergy Type</th>
+									</thead>
+                                    <tbody>							
+										<tr>
+										<form action="../includes/insert-allergy.php?csrf=$_SESSION['csrf_token']" method="post">
+											<td><input type="text" class="form-control" name="allergy_name" placeholder="Allergy Name"></td>
+											<td><textarea id="note" class="form-control" name="allergy_type" placeholder="Food, Drug, Environmental, Other"></textarea></td>
+                                            <td><button type="submit" class="btn btn-primary">Save entry</button></td>
+										
+										</tr>
+									</tbody>
+								</table>	
 
+                        </div>
                     </div>
 
                 </div>
@@ -216,11 +204,47 @@ sec_session_start();
 		
 		
             <div class="container-fluid">
-				<div style="text-align: center;padding-top: 200px;"class="row">
-				  <div class="col-sm-4"></div>
-				  <div class="col-sm-4"><h3>This page is still in development</h3></div>
-				  <div class="col-sm-4"></div>
-				</div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Allergy List</h4>
+                                <p class="category">Here is a list of all your known allergies.</p>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th>Allergy Name</th>
+                                    	<th>Allergy Type</th>
+                                    </thead>
+<?php
+
+require "../includes/db_connect.php";
+
+$query = "SELECT id, allergy_name, allergy_type FROM allergy"; //You don't need a ; like you do in SQL
+
+$result = mysqli_query($connection, $query);						
+while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
+										echo "<tbody>";
+										echo "<tr>";
+										echo "<td style=\"padding-right: 0px;padding-left: 8px;\">" . $row['allergy_name'] . "</td>";
+                                        echo "<td>" . $row['allergy_type'] . "</td>";
+										echo "</tr>";
+										echo "</tbody>";
+										}
+mysqli_close ($connection); //Make sure to close out the database connection
+?>										
+    
+
+                                        
+                                    
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
